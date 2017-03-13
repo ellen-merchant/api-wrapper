@@ -2,6 +2,8 @@
 
 namespace Ellllllen\ApiWrapper;
 
+use Illuminate\Contracts\Config\Repository;
+
 class Connect
 {
     /**
@@ -12,30 +14,36 @@ class Connect
      * @var ReadResponse
      */
     private $readResponse;
+    /**
+     * @var Repository
+     */
+    private $config;
 
     /**
      * Connect constructor.
      * @param ApiClientInterface $apiClient
      * @param ReadResponse $readResponse
+     * @param Repository $config
      */
-    public function __construct(ApiClientInterface $apiClient, ReadResponse $readResponse)
+    public function __construct(ApiClientInterface $apiClient, ReadResponse $readResponse, Repository $config)
     {
         $this->apiClient = $apiClient;
         $this->readResponse = $readResponse;
+        $this->config = $config;
     }
 
     public function doGetRequest(array $parameters = []): string
     {
         $queryParameters = $this->apiClient->formatGetParameters($parameters);
 
-        $response = $this->apiClient->get(config('api-wrapper.base_url'), $this->mergeHeaders($queryParameters));
+        $response = $this->apiClient->get($this->config->get('api-wrapper.base_url'), $this->mergeHeaders($queryParameters));
 
         return $this->readResponse->getResponseContents($response);
     }
 
     private function mergeHeaders(array $parameters): array
     {
-        $headers['headers'] = config('api-wrapper.headers');
+        $headers['headers'] = $this->config->get('api-wrapper.headers');
 
         return array_merge($parameters, $headers);
     }
@@ -44,7 +52,7 @@ class Connect
     {
         $formParameters = $this->apiClient->formatRequestParameters($parameters);
 
-        $response = $this->apiClient->$method(config('api-wrapper.base_url'), $this->mergeHeaders($formParameters));
+        $response = $this->apiClient->$method($this->config->get('api-wrapper.base_url'), $this->mergeHeaders($formParameters));
 
         return $this->readResponse->getResponseContents($response);
     }
