@@ -54,7 +54,7 @@ class ConnectTest extends TestCase
             ->once()
             ->andReturn('response');
 
-        $result = $this->testingClass->doGetRequest(['parameter' => 123]);
+        $result = $this->testingClass->doRequest('get', ['parameter' => 123]);
 
         $this->assertEquals('response', $result);
     }

@@ -32,15 +32,27 @@ class Connect
         $this->config = $config;
     }
 
-    public function doGetRequest(array $parameters = []): string
+    /**
+     * Send a request to the api and return the response
+     * @param string $method
+     * @param array $parameters
+     * @return string
+     */
+    public function doRequest(string $method, array $parameters = []): string
     {
-        $queryParameters = $this->apiClient->formatGetParameters($parameters);
+        $queryParameters = $this->getQueryParameters($method, $parameters);
 
-        $response = $this->apiClient->get($this->config->get('api-wrapper.base_url'), $this->mergeHeaders($queryParameters));
+        $response = $this->apiClient->$method($this->config->get('api-wrapper.base_url'),
+            $this->mergeHeaders($queryParameters));
 
         return $this->readResponse->getResponseContents($response);
     }
 
+    /**
+     * Merge any headers from the api-wrapper config file with any custom headers for this request
+     * @param array $parameters
+     * @return array
+     */
     private function mergeHeaders(array $parameters): array
     {
         $headers['headers'] = $this->config->get('api-wrapper.headers');
@@ -48,12 +60,17 @@ class Connect
         return array_merge($parameters, $headers);
     }
 
-    public function doRequest(string $method, array $parameters = []): string
+    /**
+     * @param string $method
+     * @param array $parameters
+     * @return array
+     */
+    public function getQueryParameters(string $method, array $parameters): array
     {
-        $formParameters = $this->apiClient->formatRequestParameters($parameters);
-
-        $response = $this->apiClient->$method($this->config->get('api-wrapper.base_url'), $this->mergeHeaders($formParameters));
-
-        return $this->readResponse->getResponseContents($response);
+        if ($method == 'get') {
+            return $this->apiClient->formatGetParameters($parameters);
+        } else {
+            return $this->apiClient->formatRequestParameters($parameters);
+        }
     }
 }

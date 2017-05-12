@@ -6,6 +6,12 @@ use Psr\Http\Message\ResponseInterface;
 
 class ReadResponse
 {
+    /**
+     * Read the PSR response after the api request is made
+     * @param ResponseInterface $response
+     * @return string
+     * @throws \Exception
+     */
     public function getResponseContents(ResponseInterface $response): string
     {
         if ($response->getStatusCode() != 200) {
