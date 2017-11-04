@@ -69,8 +69,8 @@ class Connect
     {
         if ($method == 'get') {
             return $this->apiClient->formatGetParameters($parameters);
-        } else {
-            return $this->apiClient->formatRequestParameters($parameters);
         }
+        
+        return $this->apiClient->formatRequestParameters($parameters);        
     }
 }
