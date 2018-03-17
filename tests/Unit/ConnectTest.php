@@ -36,7 +36,7 @@ class ConnectTest extends TestCase
             ->andReturn(['query' => ['parameter' => 123]]);
 
         $this->mockConfig->shouldReceive('get')
-            ->with('api-wrapper.base_url')
+            ->with('api-wrapper.base-url')
             ->once()
             ->andReturn('http://api.com');
 
@@ -70,7 +70,7 @@ class ConnectTest extends TestCase
             ->andReturn(['form_params' => ['parameter' => 123]]);
 
         $this->mockConfig->shouldReceive('get')
-            ->with('api-wrapper.base_url')
+            ->with('api-wrapper.base-url')
             ->once()
             ->andReturn('http://api.com');
 
@@ -104,7 +104,7 @@ class ConnectTest extends TestCase
             ->andReturn(['form_params' => ['parameter' => 123]]);
 
         $this->mockConfig->shouldReceive('get')
-            ->with('api-wrapper.base_url')
+            ->with('api-wrapper.base-url')
             ->once()
             ->andReturn('http://api.com');
 
