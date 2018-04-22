@@ -1,6 +1,6 @@
 <?php
 
-use Ellllllen\ApiWrapper\ApiClientInterface;
+use Ellllllen\ApiWrapper\ApiClients\Contracts\ApiClientRequestInterface;
 use Ellllllen\ApiWrapper\Connect;
 use Ellllllen\ApiWrapper\ReadResponse;
 use GuzzleHttp\Psr7\Response;
@@ -9,7 +9,7 @@ use Illuminate\Contracts\Config\Repository;
 
 class ConnectTest extends TestCase
 {
-    private $mockApiClientInterface;
+    private $mockApiClientRequestInterface;
     private $testingClass;
     private $mockReadResponse;
     private $mockConfig;
@@ -18,11 +18,11 @@ class ConnectTest extends TestCase
     {
         parent::setUp();
 
-        $this->mockApiClientInterface = Mockery::mock(ApiClientInterface::class);
+        $this->mockApiClientRequestInterface = Mockery::mock(ApiClientRequestInterface::class);
         $this->mockReadResponse = Mockery::mock(ReadResponse::class);
         $this->mockConfig = Mockery::mock(Repository::class);
 
-        $this->testingClass = new Connect($this->mockApiClientInterface, $this->mockReadResponse, $this->mockConfig);
+        $this->testingClass = new Connect($this->mockApiClientRequestInterface, $this->mockReadResponse, $this->mockConfig);
     }
 
     /**
@@ -30,7 +30,7 @@ class ConnectTest extends TestCase
      */
     public function it_does_a_get_request()
     {
-        $this->mockApiClientInterface->shouldReceive('formatGetParameters')
+        $this->mockApiClientRequestInterface->shouldReceive('formatGetParameters')
             ->with(['parameter' => 123])
             ->once()
             ->andReturn(['query' => ['parameter' => 123]]);
@@ -45,7 +45,7 @@ class ConnectTest extends TestCase
             ->once()
             ->andReturn(['header1' => 456]);
 
-        $this->mockApiClientInterface->shouldReceive('get')
+        $this->mockApiClientRequestInterface->shouldReceive('get')
             ->with('http://api.com', ['query' => ['parameter' => 123], 'headers' => ['header1' => 456]])
             ->once()
             ->andReturn(new Response());
@@ -64,7 +64,7 @@ class ConnectTest extends TestCase
      */
     public function it_does_a_post_request()
     {
-        $this->mockApiClientInterface->shouldReceive('formatRequestParameters')
+        $this->mockApiClientRequestInterface->shouldReceive('formatRequestParameters')
             ->with(['parameter' => 123])
             ->once()
             ->andReturn(['form_params' => ['parameter' => 123]]);
@@ -79,7 +79,7 @@ class ConnectTest extends TestCase
             ->once()
             ->andReturn(['header1' => 456]);
 
-        $this->mockApiClientInterface->shouldReceive('post')
+        $this->mockApiClientRequestInterface->shouldReceive('post')
             ->with('http://api.com', ['form_params' => ['parameter' => 123], 'headers' => ['header1' => 456]])
             ->once()
             ->andReturn(new Response());
@@ -98,7 +98,7 @@ class ConnectTest extends TestCase
      */
     public function it_does_a_put_request()
     {
-        $this->mockApiClientInterface->shouldReceive('formatRequestParameters')
+        $this->mockApiClientRequestInterface->shouldReceive('formatRequestParameters')
             ->with(['parameter' => 123])
             ->once()
             ->andReturn(['form_params' => ['parameter' => 123]]);
@@ -113,7 +113,7 @@ class ConnectTest extends TestCase
             ->once()
             ->andReturn(['header1' => 456]);
 
-        $this->mockApiClientInterface->shouldReceive('put')
+        $this->mockApiClientRequestInterface->shouldReceive('put')
             ->with('http://api.com', ['form_params' => ['parameter' => 123], 'headers' => ['header1' => 456]])
             ->once()
             ->andReturn(new Response());

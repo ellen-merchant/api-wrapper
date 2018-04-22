@@ -2,11 +2,12 @@
 
 namespace Ellllllen\ApiWrapper\ApiClients;
 
-use Ellllllen\ApiWrapper\ApiClientInterface;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
+use Ellllllen\ApiWrapper\ApiClients\Contracts\ApiClientRequestInterface;
+use Ellllllen\ApiWrapper\ApiClients\Contracts\ApiClientInterface;
 
-class Guzzle implements ApiClientInterface
+class Guzzle implements ApiClientInterface, ApiClientRequestInterface
 {
     /**
      * @return Client
@@ -82,5 +83,10 @@ class Guzzle implements ApiClientInterface
     public function formatRequestParameters(array $parameters): array
     {
         return ['form_params' => $parameters];
+    }
+
+    public function request(string $method, string $url, array $options = [])
+    {
+        return $this->initiate()->request($method, $url, $options);
     }
 }

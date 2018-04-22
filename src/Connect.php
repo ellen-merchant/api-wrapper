@@ -3,13 +3,14 @@
 namespace Ellllllen\ApiWrapper;
 
 use Illuminate\Contracts\Config\Repository;
+use Ellllllen\ApiWrapper\ApiClients\Contracts\ApiClientRequestInterface;
 
 class Connect
 {
     const BASE_URL = "api-wrapper.base-url";
     const HEADERS = "api-wrapper.headers";
     /**
-     * @var ApiClientInterface
+     * @var ApiClientRequestInterface
      */
     private $apiClient;
     /**
@@ -23,11 +24,11 @@ class Connect
 
     /**
      * Connect constructor.
-     * @param ApiClientInterface $apiClient
+     * @param ApiClientRequestInterface $apiClient
      * @param ReadResponse $readResponse
      * @param Repository $config
      */
-    public function __construct(ApiClientInterface $apiClient, ReadResponse $readResponse, Repository $config)
+    public function __construct(ApiClientRequestInterface $apiClient, ReadResponse $readResponse, Repository $config)
     {
         $this->apiClient = $apiClient;
         $this->readResponse = $readResponse;
@@ -38,14 +39,22 @@ class Connect
      * Send a request to the api and return the response
      * @param string $method
      * @param array $parameters
+     * @param string $url
+     * @param bool $customContentType set to true if you have a Content-Type header defined
      * @return string
+     * @throws \Exception
      */
-    public function doRequest(string $method = "get", array $parameters = []): string
+    public function doRequest(string $method = "get", array $parameters = [], string $url = "", $customContentType = false): string
     {
-        $queryParameters = $this->getQueryParameters($method, $parameters);
+        $fullUrl = $this->formatUrl($url);
 
-        $response = $this->apiClient->$method($this->config->get(static::BASE_URL),
-            $this->mergeHeaders($queryParameters));
+        if($customContentType) {
+            $response = $this->apiClient->request($method, $fullUrl, $this->mergeHeaders($parameters));
+        }
+        else {
+            $queryParameters = $this->getQueryParameters($method, $parameters);
+            $response = $this->apiClient->$method($fullUrl, $this->mergeHeaders($queryParameters));
+        }
 
         return $this->readResponse->getResponseContents($response);
     }
@@ -77,5 +86,16 @@ class Connect
                 return $this->apiClient->formatRequestParameters($parameters);
                 break;
         }
+    }
+
+    private function formatUrl(string $url)
+    {
+        $fullUrl = $this->config->get(static::BASE_URL);
+        if(!empty($url))
+        {
+            $fullUrl .= $url;
+        }
+
+        return $fullUrl;
     }
 }
