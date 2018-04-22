@@ -1,10 +1,10 @@
 # ellllllen/api-wrapper
 An API wrapper for the @guzzle/guzzle package
 
-##Installation
+## Installation
 `composer require ellllllen/api-wrapper`
 
-##Laravel 5 Implementation
+## Laravel 5 Implementation
 1. In `app/config` add the package Service Provider to the providers array: 
 `\Ellllllen\ApiWrapper\ApiWrapperServiceProvider::class`
 
@@ -12,8 +12,8 @@ An API wrapper for the @guzzle/guzzle package
 
 3. Add the configuration for the API you are querying in `config/api-wrapper`
 
-##Usage Example
-###GET request, with no parameters
+## Usage Example
+### GET request, with no parameters
 
 ```
 use Ellllllen\ApiWrapper\Connect;
@@ -29,7 +29,7 @@ class HomeController extends Controller
  }
 ```
 
-###POST request, with parameters
+### POST request, with parameters
 
 ```
 use Ellllllen\ApiWrapper\Connect;
@@ -45,7 +45,7 @@ class HomeController extends Controller
  }
 ```
 
-##Future Developments
+## Future Developments
 1. Facility to connect to multiple APIs
 2. API debugging facilities
 
