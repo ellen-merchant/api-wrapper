@@ -2,7 +2,7 @@ language: php
 sudo: required
 dist: trusty
 php:
-- 7.2
+- 7.0
 before_install:
 - composer self-update
 before_script:
