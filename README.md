@@ -1,5 +1,7 @@
-# ellllllen/api-wrapper
+# API Wrapper
 An API wrapper for the @guzzle/guzzle package
+
+[![Build Status](https://travis-ci.com/ellllllen/api-wrapper.svg?branch=master)](https://travis-ci.com/ellllllen/api-wrapper)
 
 ## Installation
 `composer require ellllllen/api-wrapper`
