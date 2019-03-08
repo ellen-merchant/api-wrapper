@@ -2,6 +2,7 @@
 An API wrapper for the @guzzle/guzzle package
 
 [![Build Status](https://travis-ci.com/ellllllen/api-wrapper.svg?branch=master)](https://travis-ci.com/ellllllen/api-wrapper)
+[![codecov](https://codecov.io/gh/ellllllen/api-wrapper/branch/master/graph/badge.svg)](https://codecov.io/gh/ellllllen/api-wrapper)
 
 ## Installation
 `composer require ellllllen/api-wrapper`
