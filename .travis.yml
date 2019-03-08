@@ -8,7 +8,7 @@ before_install:
 before_script:
 - composer install --no-interaction
 script:
-- phpdbg -qrr vendor/bin/phpunit tests/
+- phpdbg -qrr vendor/bin/phpunit --coverage-clover=coverage.xml tests/
 cache:
   directories:
   - vendor
